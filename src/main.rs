@@ -13,7 +13,7 @@ fn main() {
                 for y in x.1 {
                     print!(
                         "{}\t",
-                        y.creatures.iter().count(),
+                        y.creatures.len(),
                     )
                 }
                 println!("\n")
@@ -59,16 +59,16 @@ impl Board {
                 for mut z in j.creatures.clone() {
                     match j.food_level {
                         Level::Low => {
-                            z.saturation = z.saturation - (j.creatures.iter().count() as i32)
-                                + 10 / (j.creatures.iter().count() as i32)
+                            z.saturation = z.saturation - (j.creatures.len() as i32)
+                                + 10 / (j.creatures.len() as i32)
                         }
                         Level::Normal => {
-                            z.saturation = z.saturation - (j.creatures.iter().count() as i32)
-                                + 50 / (j.creatures.iter().count() as i32)
+                            z.saturation = z.saturation - (j.creatures.len() as i32)
+                                + 50 / (j.creatures.len() as i32)
                         }
                         Level::High => {
-                            z.saturation = z.saturation - (j.creatures.iter().count() as i32)
-                                + 150 / (j.creatures.iter().count() as i32)
+                            z.saturation = z.saturation - (j.creatures.len() as i32)
+                                + 150 / (j.creatures.len() as i32)
                         }
                     }
                     if z.saturation > 100 {
@@ -112,12 +112,12 @@ enum Level {
 
 impl Level {
     pub fn random() -> Level {
-        return match rand::thread_rng().gen_range(0..=2) {
+        match rand::thread_rng().gen_range(0..=2) {
             0 => Level::Low,
             1 => Level::Normal,
             2 => Level::High,
             _ => panic!("How????"),
-        };
+        }
     }
 }
 
