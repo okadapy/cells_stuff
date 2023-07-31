@@ -1,5 +1,6 @@
 use super::creature::Creature;
 use super::level::Level;
+#[derive(Debug)]
 pub struct Cell {
     pub food: Level,
     pub water: Level,

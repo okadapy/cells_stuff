@@ -2,7 +2,7 @@ mod cell;
 mod creature;
 mod level;
 use cell::Cell;
-
+#[derive(Debug)]
 pub struct Board {
     x: usize,
     y: usize,
@@ -30,13 +30,14 @@ impl ToString for Board {
             let mut row_buf: String = String::new();
             for cell in row {
                 row_buf.push_str(&format!(
-                    "{}, {}, {} [{}]\t",
+                    "{},\t{},\t{}\t[{}]\t",
                     cell.food.to_string(),
                     cell.water.to_string(),
                     cell.danger.to_string(),
                     cell.creatures.len()
-                ))
+                ));
             }
+            buf.push_str(&format!("{}\n", row_buf))
         }
         buf
     }

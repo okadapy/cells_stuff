@@ -1,6 +1,6 @@
 use super::Board;
 use rand::Rng;
-
+#[derive(Debug)]
 pub struct Creature {
     pub x: usize,
     pub y: usize,

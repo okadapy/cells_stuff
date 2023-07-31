@@ -1,4 +1,5 @@
 use rand::Rng;
+#[derive(Debug)]
 pub enum Level {
     Zero,
     Low,
