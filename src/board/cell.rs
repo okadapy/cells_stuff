@@ -14,7 +14,7 @@ impl Cell {
             food: Level::random(),
             water: Level::random(),
             danger: Level::random(),
-            creatures: vec![],
+            creatures: vec![Creature::new(100, 100, 5, 5)],
         }
     }
 }

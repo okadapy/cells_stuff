@@ -1,6 +1,8 @@
 mod cell;
 mod creature;
 mod level;
+use std::{borrow::BorrowMut, ops::IndexMut};
+
 use cell::Cell;
 
 use self::creature::Creature;
@@ -23,16 +25,52 @@ impl Board {
         }
         Board { x, y, content }
     }
-
+    
     pub fn update(&mut self) {
-        self.content.iter_mut().map(|row| {
-            row.iter_mut().map(|cell| {
-                cell.creatures
-                    .iter_mut()
-                    .filter(|creature| creature.saturation > 0 && creature.thirst > 0).map(move |creature| creature.reproduce(self))
-            })
-        });
-    }
+        let mut board = self.clone();
+        let mut reproduction: Board = self.clone();
+        let mut reproduce: Vec<((usize, usize, usize), (usize, usize))> = vec![];
+        for row in board.content.iter_mut() {
+            for cell in row.iter_mut() {
+                cell.creatures = cell.creatures.iter().filter(|creature| creature.saturation > 0 || creature.thirst > 0).cloned().collect();
+                for creature in cell.creatures.clone().iter_mut() {
+                        creature.feed(
+                            match cell.food {
+                                level::Level::Zero => (0 - (cell.creatures.len() as i32)),
+                                level::Level::Low => {
+                                    (10 / (cell.creatures.len() as i32)
+                                        - (cell.creatures.len() as i32))
+                                }
+                                level::Level::Normal => {
+                                    (50 / (cell.creatures.len() as i32)
+                                        - (cell.creatures.len() as i32))
+                                }
+                                level::Level::High => {
+                                    (150 / (cell.creatures.len() as i32)
+                                        - (cell.creatures.len() as i32))
+                                }
+                            },
+                            match cell.water {
+                                level::Level::Zero => (0 - (cell.creatures.len() as i32)),
+                                level::Level::Low => {
+                                    (10 / (cell.creatures.len() as i32)
+                                        - (cell.creatures.len() as i32))
+                                }
+                                level::Level::Normal => {
+                                    (50 / (cell.creatures.len() as i32)
+                                        - (cell.creatures.len() as i32))
+                                }
+                                level::Level::High => {
+                                    (150 / (cell.creatures.len() as i32)
+                                        - (cell.creatures.len() as i32))
+                                }
+                            },
+                        );
+                        creature.reproduce(&mut reproduction)
+                    }
+                }
+            }
+        }
 }
 
 impl ToString for Board {
