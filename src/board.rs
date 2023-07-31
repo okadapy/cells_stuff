@@ -2,7 +2,9 @@ mod cell;
 mod creature;
 mod level;
 use cell::Cell;
-#[derive(Debug)]
+
+use self::creature::Creature;
+#[derive(Debug, Clone)]
 pub struct Board {
     x: usize,
     y: usize,
@@ -20,6 +22,16 @@ impl Board {
             content.push(row)
         }
         Board { x, y, content }
+    }
+
+    pub fn update(&mut self) {
+        self.content.iter_mut().map(|row| {
+            row.iter_mut().map(|cell| {
+                cell.creatures
+                    .iter_mut()
+                    .filter(|creature| creature.saturation > 0 && creature.thirst > 0).map(move |creature| creature.reproduce(self))
+            })
+        });
     }
 }
 

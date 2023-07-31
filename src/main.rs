@@ -4,6 +4,11 @@ use rand::Rng;
 use std::time;
 
 fn main() {
-    let board: Board = Board::new( 11, 6);
-    println!("{}", board.to_string())
+    let board: Board = Board::new(11, 6);
+    let mut last_time = time::Instant::now();
+    loop {
+        if last_time.elapsed().as_secs() >= 1 {
+            println!("{}", board.to_string())
+        }
+    }
 }

@@ -1,6 +1,6 @@
 use super::Board;
 use rand::Rng;
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub struct Creature {
     pub x: usize,
     pub y: usize,
@@ -43,6 +43,11 @@ impl Creature {
         board.content[result_pos.0][result_pos.1]
             .creatures
             .push(new_creature);
+    }
+
+    fn feed(&mut self, food_amount: i32, water_amount: i32) {
+        self.saturation += food_amount as usize;
+        self.thirst += water_amount as usize;
     }
 }
 
