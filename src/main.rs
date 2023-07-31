@@ -1,7 +1,6 @@
 mod board;
 use board::Board;
-use std::time;
 use rand::Rng;
+use std::time;
 
-fn main() {
-}
+fn main() {}
